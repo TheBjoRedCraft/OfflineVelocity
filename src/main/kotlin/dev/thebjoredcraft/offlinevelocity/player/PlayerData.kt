@@ -5,5 +5,9 @@ import java.util.UUID
 class PlayerData (
     val uuid: UUID,
     val name: String,
-    var exists: Boolean
-)
+    private var exists: Boolean
+) {
+    fun exists(): Boolean {
+        return exists
+    }
+}
