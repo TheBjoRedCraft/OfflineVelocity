@@ -1,14 +1,17 @@
 package dev.thebjoredcraft.offlinevelocity.database
 
 import com.velocitypowered.api.proxy.Player
+
 import dev.thebjoredcraft.offlinevelocity.OfflineVelocity
 import dev.thebjoredcraft.offlinevelocity.player.PlayerData
-import dev.thebjoredcraft.offlinevelocity.plugin
+
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+
 import java.sql.Connection
 import java.sql.DriverManager
 import java.sql.ResultSet
+
 import java.util.UUID
 
 object DatabaseService {
@@ -41,6 +44,11 @@ object DatabaseService {
             preparedStatement.setString(1, uuid.toString())
 
             val resultSet: ResultSet = preparedStatement.executeQuery()
+
+            if(OfflineVelocity.instance.dev) {
+                OfflineVelocity.instance.logger.info("OV > Loaded player with UUID $uuid from SQLite database.")
+            }
+
             return@withContext if (resultSet.next()) {
                 PlayerData(UUID.fromString(resultSet.getString("uuid")), resultSet.getString("name"), true)
             } else {
@@ -63,6 +71,11 @@ object DatabaseService {
             preparedStatement.setString(1, player.uniqueId.toString())
             preparedStatement.setString(2, player.username)
             preparedStatement.executeUpdate()
+
+
+            if(OfflineVelocity.instance.dev) {
+                OfflineVelocity.instance.logger.info("OV > Saved player ${player.username} to SQLite database.")
+            }
         }
     }
 
@@ -80,6 +93,11 @@ object DatabaseService {
             preparedStatement.setString(1, name)
 
             val resultSet: ResultSet = preparedStatement.executeQuery()
+
+            if(OfflineVelocity.instance.dev) {
+                OfflineVelocity.instance.logger.info("OV > Loaded player with name $name from SQLite database.")
+            }
+
             return@withContext if (resultSet.next()) {
                 UUID.fromString(resultSet.getString("uuid"))
             } else {
