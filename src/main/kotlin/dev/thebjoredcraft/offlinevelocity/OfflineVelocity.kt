@@ -27,6 +27,7 @@ val plugin: OfflineVelocity get() = OfflineVelocity.instance
 class OfflineVelocity @Inject constructor(
     val logger: Logger,
     val proxy: ProxyServer,
+    val dev: Boolean = true,
     @DataDirectory val dataDirectory: Path,
     suspendingPluginContainer: SuspendingPluginContainer
 ) {
