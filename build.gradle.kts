@@ -18,8 +18,15 @@ repositories {
 
 dependencies {
     compileOnly("com.velocitypowered:velocity-api:3.4.0-SNAPSHOT")
+
     annotationProcessor("com.velocitypowered:velocity-api:3.4.0-SNAPSHOT")
+
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+    implementation("org.xerial:sqlite-jdbc:3.41.2.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.1")
+    implementation("dev.hsbrysk:caffeine-coroutines:2.0.0")
+    implementation("com.github.shynixn.mccoroutine:mccoroutine-velocity-api:2.21.0")
+    implementation("com.github.shynixn.mccoroutine:mccoroutine-velocity-core:2.21.0")
 }
 
 kotlin {
