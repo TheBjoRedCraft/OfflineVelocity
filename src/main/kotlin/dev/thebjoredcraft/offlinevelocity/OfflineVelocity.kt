@@ -17,17 +17,18 @@ import java.nio.file.Path
 val plugin: OfflineVelocity get() = OfflineVelocity.instance
 
 @Plugin(
-    id = "offline-velocity",
+    id = "offlinevelocity",
     name = "OfflineVelocity",
     version = "1.0.0",
     description = "A modern asynchronous Velocity OfflinePlayer support API",
     url = "github.com/TheBjoRedCraft/OfflineVelocity",
     authors = ["TheBjoRedCraft"]
 )
-class OfflineVelocity @Inject constructor(
+class OfflineVelocity
+@Inject
+constructor (
     val logger: Logger,
     val proxy: ProxyServer,
-    val dev: Boolean = true,
     @DataDirectory val dataDirectory: Path,
     suspendingPluginContainer: SuspendingPluginContainer
 ) {
@@ -51,5 +52,6 @@ class OfflineVelocity @Inject constructor(
 
     companion object {
         lateinit var instance: OfflineVelocity
+        var dev: Boolean = false
     }
 }

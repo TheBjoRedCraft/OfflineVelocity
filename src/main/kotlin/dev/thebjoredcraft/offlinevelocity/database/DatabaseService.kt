@@ -19,7 +19,11 @@ object DatabaseService {
     private val path: String = "${OfflineVelocity.instance.dataDirectory}/player-storage.db"
 
     fun connect() {
+        Class.forName("org.sqlite.JDBC")
+
         val url = "jdbc:sqlite:$path"
+
+        this.createDatabaseFile()
 
         connection = DriverManager.getConnection(url)
 
@@ -45,7 +49,7 @@ object DatabaseService {
 
             val resultSet: ResultSet = preparedStatement.executeQuery()
 
-            if(OfflineVelocity.instance.dev) {
+            if(OfflineVelocity.dev) {
                 OfflineVelocity.instance.logger.info("OV > Loaded player with UUID $uuid from SQLite database.")
             }
 
@@ -73,7 +77,7 @@ object DatabaseService {
             preparedStatement.executeUpdate()
 
 
-            if(OfflineVelocity.instance.dev) {
+            if(OfflineVelocity.dev) {
                 OfflineVelocity.instance.logger.info("OV > Saved player ${player.username} to SQLite database.")
             }
         }
@@ -94,7 +98,7 @@ object DatabaseService {
 
             val resultSet: ResultSet = preparedStatement.executeQuery()
 
-            if(OfflineVelocity.instance.dev) {
+            if(OfflineVelocity.dev) {
                 OfflineVelocity.instance.logger.info("OV > Loaded player with name $name from SQLite database.")
             }
 
@@ -114,5 +118,14 @@ object DatabaseService {
 
     private fun isUnknownUser(player: Player) : Boolean {
         return player.username == "Unknown"
+    }
+
+    private fun createDatabaseFile() {
+        if(OfflineVelocity.instance.dataDirectory.toFile().exists()) {
+            return
+        }
+
+        OfflineVelocity.instance.dataDirectory.toFile().mkdirs()
+        OfflineVelocity.instance.dataDirectory.resolve("player-storage.db").toFile().createNewFile()
     }
 }
