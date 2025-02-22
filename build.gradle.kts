@@ -3,6 +3,8 @@ plugins {
     id("com.github.johnrengelman.shadow") version "8.1.1"
 
     kotlin("kapt") version "2.1.10"
+
+    `maven-publish`
 }
 
 group = "dev.thebjoredcraft"
