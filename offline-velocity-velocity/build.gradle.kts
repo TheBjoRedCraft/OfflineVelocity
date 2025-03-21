@@ -1,12 +1,19 @@
 plugins {
     kotlin("jvm")
     kotlin("kapt") version "2.1.10"
+    kotlin("plugin.serialization") version "1.9.0"
 
     id("com.gradleup.shadow") version "9.0.0-beta11"
 }
 
 repositories {
     mavenCentral()
+    gradlePluginPortal()
+
+    maven {
+        name = "papermc"
+        url = uri("https://repo.papermc.io/repository/maven-public/")
+    }
 }
 
 dependencies {
@@ -14,16 +21,18 @@ dependencies {
     kapt(libs.velocity.annotation)
 
     implementation(libs.kotlin.coroutines)
-    implementation(libs.caffeine.coroutines)
-
-    implementation(libs.bundles.mccoroutine.velocity)
+    implementation(libs.configurate.hocon)
+    implementation(libs.mccoroutine.velocity.api)
+    implementation(libs.mccoroutine.velocity.core)
 
     implementation(libs.bundles.exposed) {
         exclude("org.jetbrains.kotlin", "kotlin-stdlib")
         exclude("org.jetbrains.kotlin", "kotlin-reflect")
         exclude("org.jetbrains.kotlinx", "kotlinx-coroutines-core")
-        exclude("org.slf4j", "slf4j-api")
     }
+
+    api(project(":offline-velocity-core"))
+    api(libs.hikari)
 
 }
 

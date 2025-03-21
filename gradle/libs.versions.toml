@@ -9,20 +9,25 @@ kotlin-coroutines = "1.10.1"
 caffeine-coroutines = "2.0.0"
 
 exposed = "0.60.0"
+hikari = "6.2.1"
+configurate = "4.1.2"
 
 [libraries]
 velocity-api = { module = "com.velocitypowered:velocity-api", version.ref = "velocity-api" }
 velocity-annotation = { module = "com.velocitypowered:velocity-api", version.ref = "velocity-annotation" }
 
-mccoroutine-velocity-api = { module = "org.jetbrains.exposed:exposed-dao", version.ref = "mccoroutine-velocity-api" }
-mccoroutine-velocity-core = { module = "org.jetbrains.exposed:exposed-dao", version.ref = "mccoroutine-velocity-core" }
+mccoroutine-velocity-api = { module = "com.github.shynixn.mccoroutine:mccoroutine-velocity-api", version.ref = "mccoroutine-velocity-api" }
+mccoroutine-velocity-core = { module = "com.github.shynixn.mccoroutine:mccoroutine-velocity-core", version.ref = "mccoroutine-velocity-core" }
 
 kotlin-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlin-coroutines" }
 caffeine-coroutines = { module = "dev.hsbrysk:caffeine-coroutines", version.ref = "caffeine-coroutines" }
+hikari = { module = "com.zaxxer:HikariCP", version.ref = "hikari" }
 
 exposed-core = { module = "org.jetbrains.exposed:exposed-core", version.ref = "exposed" }
 exposed-jdbc = { module = "org.jetbrains.exposed:exposed-jdbc", version.ref = "exposed" }
 exposed-dao = { module = "org.jetbrains.exposed:exposed-dao", version.ref = "exposed" }
+
+configurate-hocon = { module = "org.spongepowered:configurate-hocon", version.ref = "configurate" }
 
 [bundles]
 exposed = ["exposed-core", "exposed-jdbc", "exposed-dao"]
