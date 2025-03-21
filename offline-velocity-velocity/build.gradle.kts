@@ -1,21 +1,32 @@
 plugins {
     kotlin("jvm")
-}
+    kotlin("kapt") version "2.1.10"
 
-group = "dev.thebjoredcraft"
-version = "1.0.0"
+    id("com.gradleup.shadow") version "9.0.0-beta11"
+}
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    testImplementation(kotlin("test"))
+    compileOnly(libs.velocity.api)
+    kapt(libs.velocity.annotation)
+
+    implementation(libs.kotlin.coroutines)
+    implementation(libs.caffeine.coroutines)
+
+    implementation(libs.bundles.mccoroutine.velocity)
+
+    implementation(libs.bundles.exposed) {
+        exclude("org.jetbrains.kotlin", "kotlin-stdlib")
+        exclude("org.jetbrains.kotlin", "kotlin-reflect")
+        exclude("org.jetbrains.kotlinx", "kotlinx-coroutines-core")
+        exclude("org.slf4j", "slf4j-api")
+    }
+
 }
 
-tasks.test {
-    useJUnitPlatform()
-}
 kotlin {
     jvmToolchain(21)
 }
