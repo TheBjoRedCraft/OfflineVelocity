@@ -40,3 +40,8 @@ kotlin {
 tasks.shadowJar {
     archiveFileName = "offline-velocity-${project.version}.jar"
 }
+
+allprojects {
+    group = "dev.thebjoredcraft"
+    version = "2.0.0"
+}
