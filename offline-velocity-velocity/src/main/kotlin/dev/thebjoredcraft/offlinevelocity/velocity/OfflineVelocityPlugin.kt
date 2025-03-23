@@ -1,4 +1,5 @@
-package dev.thebjoredcraft.offlinevelocity
+package dev.thebjoredcraft.offlinevelocity.velocity
+
 
 import com.github.shynixn.mccoroutine.velocity.SuspendingPluginContainer
 import com.github.shynixn.mccoroutine.velocity.registerSuspend
@@ -9,22 +10,22 @@ import com.velocitypowered.api.event.proxy.ProxyShutdownEvent
 import com.velocitypowered.api.plugin.Plugin
 import com.velocitypowered.api.plugin.annotation.DataDirectory
 import com.velocitypowered.api.proxy.ProxyServer
-import dev.thebjoredcraft.offlinevelocity.database.DatabaseService
-import dev.thebjoredcraft.offlinevelocity.listener.PlayerConnectionHandler
+import dev.thebjoredcraft.offlinevelocity.core.databaseService
+import dev.thebjoredcraft.offlinevelocity.velocity.config.ConfigService
 import org.slf4j.Logger
 import java.nio.file.Path
 
-val plugin: OfflineVelocity get() = OfflineVelocity.instance
+val plugin: OfflineVelocityPlugin get() = OfflineVelocityPlugin.instance
 
 @Plugin(
     id = "offlinevelocity",
     name = "OfflineVelocity",
-    version = "1.0.0",
+    version = "2.0.0",
     description = "A modern asynchronous Velocity OfflinePlayer support API",
     url = "github.com/TheBjoRedCraft/OfflineVelocity",
     authors = ["TheBjoRedCraft"]
 )
-class OfflineVelocity
+class OfflineVelocityPlugin
 @Inject
 constructor (
     val logger: Logger,
@@ -40,18 +41,16 @@ constructor (
 
     @Subscribe
     suspend fun onProxyInitialization(event: ProxyInitializeEvent) {
-        DatabaseService.connect()
-
-        proxy.eventManager.registerSuspend(this, PlayerConnectionHandler())
+        ConfigService.loadConfig()
+        databaseService.connect()
     }
 
     @Subscribe
     suspend fun onProxyShutdown(event: ProxyShutdownEvent) {
-        DatabaseService.disconnect()
+        databaseService.disconnect()
     }
 
     companion object {
-        lateinit var instance: OfflineVelocity
-        var dev: Boolean = false
+        lateinit var instance: OfflineVelocityPlugin
     }
 }

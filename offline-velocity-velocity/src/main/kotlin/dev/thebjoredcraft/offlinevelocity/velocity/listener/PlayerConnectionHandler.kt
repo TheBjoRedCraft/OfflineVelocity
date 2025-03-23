@@ -1,12 +1,12 @@
-package dev.thebjoredcraft.offlinevelocity.listener
+package dev.thebjoredcraft.offlinevelocity.velocity.listener
 
 import com.velocitypowered.api.event.Subscribe
 import com.velocitypowered.api.event.connection.DisconnectEvent
-import dev.thebjoredcraft.offlinevelocity.database.DatabaseService
+import dev.thebjoredcraft.offlinevelocity.core.databaseService
 
 class PlayerConnectionHandler() {
     @Subscribe
     suspend fun onDisconnect(event: DisconnectEvent) {
-        DatabaseService.saveIfNotExists(event.player)
+        databaseService.saveIfNotExists(event.player.uniqueId, event.player.username)
     }
 }
