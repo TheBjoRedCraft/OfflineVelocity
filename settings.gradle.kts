@@ -5,3 +5,4 @@ rootProject.name = "offline-velocity"
 include("offline-velocity-api")
 include("offline-velocity-core")
 include("offline-velocity-velocity")
+include("offline-velocity-example")

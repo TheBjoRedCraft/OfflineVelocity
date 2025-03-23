@@ -1,35 +1,32 @@
-package dev.thebjoredcraft.offlinevelocity
+package dev.thebjoredcraft.offlinevelocity.example
+
 
 import com.github.shynixn.mccoroutine.velocity.SuspendingPluginContainer
-import com.github.shynixn.mccoroutine.velocity.registerSuspend
 import com.google.inject.Inject
 import com.velocitypowered.api.event.Subscribe
 import com.velocitypowered.api.event.proxy.ProxyInitializeEvent
 import com.velocitypowered.api.event.proxy.ProxyShutdownEvent
 import com.velocitypowered.api.plugin.Plugin
-import com.velocitypowered.api.plugin.annotation.DataDirectory
 import com.velocitypowered.api.proxy.ProxyServer
-import dev.thebjoredcraft.offlinevelocity.database.DatabaseService
-import dev.thebjoredcraft.offlinevelocity.listener.PlayerConnectionHandler
+import dev.thebjoredcraft.offlinevelocity.api.OfflineVelocityApi
+import dev.thebjoredcraft.offlinevelocity.api.offlineVelocityApi
 import org.slf4j.Logger
-import java.nio.file.Path
 
-val plugin: OfflineVelocity get() = OfflineVelocity.instance
+val plugin: OfflineVelocityPlugin get() = OfflineVelocityPlugin.instance
 
 @Plugin(
-    id = "offlinevelocity",
-    name = "OfflineVelocity",
+    id = "offlinevelocityexample",
+    name = "OfflineVelocityExample",
     version = "1.0.0",
-    description = "A modern asynchronous Velocity OfflinePlayer support API",
+    description = "A example plugin for OfflineVelocity",
     url = "github.com/TheBjoRedCraft/OfflineVelocity",
     authors = ["TheBjoRedCraft"]
 )
-class OfflineVelocity
+class OfflineVelocityPlugin
 @Inject
 constructor (
     val logger: Logger,
     val proxy: ProxyServer,
-    @DataDirectory val dataDirectory: Path,
     suspendingPluginContainer: SuspendingPluginContainer
 ) {
     init {
@@ -40,18 +37,17 @@ constructor (
 
     @Subscribe
     suspend fun onProxyInitialization(event: ProxyInitializeEvent) {
-        DatabaseService.connect()
-
-        proxy.eventManager.registerSuspend(this, PlayerConnectionHandler())
+        logger.info("You can display, how man offline players are in the database here: ${offlineVelocityApi.getOfflineUsers().size}")
+        logger.info("You can get a random offline player name here: ${offlineVelocityApi.getName(offlineVelocityApi.getOfflineUsers().first()) ?: "N/A"}")
+        logger.info("You can get a random offline player uuid here: ${offlineVelocityApi.getUuid(offlineVelocityApi.getName(offlineVelocityApi.getOfflineUsers().first()) ?: "N/A")}")
     }
 
     @Subscribe
     suspend fun onProxyShutdown(event: ProxyShutdownEvent) {
-        DatabaseService.disconnect()
+
     }
 
     companion object {
-        lateinit var instance: OfflineVelocity
-        var dev: Boolean = false
+        lateinit var instance: OfflineVelocityPlugin
     }
 }

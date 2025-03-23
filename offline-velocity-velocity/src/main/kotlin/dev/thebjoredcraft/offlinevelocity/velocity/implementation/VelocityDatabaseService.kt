@@ -11,11 +11,8 @@ import dev.thebjoredcraft.offlinevelocity.velocity.plugin
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import net.kyori.adventure.util.Services.Fallback
-import org.jetbrains.exposed.sql.Database
-import org.jetbrains.exposed.sql.SchemaUtils
+import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
-import org.jetbrains.exposed.sql.Table
-import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.jetbrains.exposed.sql.transactions.transaction
 
@@ -24,6 +21,7 @@ import kotlin.io.path.absolutePathString
 import kotlin.io.path.createFile
 import kotlin.io.path.div
 import kotlin.io.path.notExists
+import kotlin.text.insert
 
 @AutoService(DatabaseService::class)
 class VelocityDatabaseService: DatabaseService, Fallback {
@@ -67,14 +65,12 @@ class VelocityDatabaseService: DatabaseService, Fallback {
     override suspend fun getUser(uuid: UUID): User? {
         return withContext(Dispatchers.IO) {
             newSuspendedTransaction {
-                Users.selectAll().where { Users.uuid eq uuid }
-                    .mapNotNull { row ->
-                        User(
-                            uuid = row[Users.uuid],
-                            name = row[Users.name]
-                        )
-                    }
-                    .singleOrNull()
+                Users.selectAll().where { Users.uuid eq uuid }.firstNotNullOfOrNull { row ->
+                    User(
+                        uuid = row[Users.uuid],
+                        name = row[Users.name]
+                    )
+                }
             }
         }
     }
@@ -82,14 +78,43 @@ class VelocityDatabaseService: DatabaseService, Fallback {
     override suspend fun getUser(name: String): User? {
         return withContext(Dispatchers.IO) {
             newSuspendedTransaction {
-                Users.selectAll().where { Users.name eq name }
-                    .mapNotNull { row ->
-                        User(
-                            uuid = row[Users.uuid],
-                            name = row[Users.name]
-                        )
+                Users.selectAll().where { Users.name eq name }.firstNotNullOfOrNull { row ->
+                    User(
+                        uuid = row[Users.uuid],
+                        name = row[Users.name]
+                    )
+                }
+            }
+        }
+    }
+
+    override suspend fun getOfflineUsers(): Set<UUID> {
+        return withContext(Dispatchers.IO) {
+            newSuspendedTransaction {
+                Users.selectAll()
+                    .map { row -> row[Users.uuid] }
+                    .toSet()
+            }
+        }
+    }
+
+    override suspend fun saveIfNotExists(uuid: UUID, name: String) {
+        withContext(Dispatchers.IO) {
+            newSuspendedTransaction {
+                val existingUser = Users.select ( Users.uuid eq uuid ).firstOrNull()
+
+                if (existingUser == null) {
+                    Users.insert {
+                        it[Users.uuid] = uuid
+                        it[Users.name] = name
                     }
-                    .singleOrNull()
+                } else if (existingUser[Users.name] != name) {
+                    Users.update({ Users.uuid eq uuid }) {
+                        it[Users.name] = name
+                    }
+                } else {
+                    return@newSuspendedTransaction
+                }
             }
         }
     }
@@ -117,8 +142,6 @@ class VelocityDatabaseService: DatabaseService, Fallback {
     }
 
     private fun connectExternal() {
-
-
         connectUsingHikari(
             ConfigService.getExternalConnector(),
             ConfigService.getExternalDriver(),
@@ -154,6 +177,8 @@ class VelocityDatabaseService: DatabaseService, Fallback {
         }
 
         connection = Database.connect(HikariDataSource(hikariConfig))
+
+        info("Successfully connected to database with $connector!")
     }
 
     override fun disconnect() {

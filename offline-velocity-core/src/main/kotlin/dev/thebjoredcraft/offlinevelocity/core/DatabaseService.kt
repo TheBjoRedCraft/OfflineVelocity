@@ -9,6 +9,9 @@ interface DatabaseService {
 
     suspend fun getUser(uuid: UUID): User?
     suspend fun getUser(name: String): User?
+    suspend fun getOfflineUsers(): Set<UUID>
+
+    suspend fun saveIfNotExists(uuid: UUID, name: String)
 
     fun disconnect()
 

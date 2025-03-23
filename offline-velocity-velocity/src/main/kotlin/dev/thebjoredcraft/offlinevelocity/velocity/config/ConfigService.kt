@@ -10,6 +10,10 @@ object ConfigService {
     private val configFile = File(plugin.dataDirectory.toFile(), "config.conf")
 
     fun loadConfig() {
+        if (!configFile.exists()) {
+            configFile.createNewFile()
+        }
+
         val loader = HoconConfigurationLoader.builder().file(configFile).build()
         config = loader.load()
 
@@ -42,14 +46,14 @@ object ConfigService {
         saveConfig()
     }
 
-    fun saveConfig() {
+    private fun saveConfig() {
         val loader = HoconConfigurationLoader.builder().file(configFile).build()
         loader.save(config)
     }
 
     fun getStorageMethod(): String = config.node("storage-method").getString("local")
     fun getExternalConnector(): String = config.node("database-external", "connector").getString("mysql")
-    fun getExternalDriver(): String = config.node("database-external", "driver").getString("mysql driver //TODO")
+    fun getExternalDriver(): String = config.node("database-external", "driver").getString("com.mysql.cj.jdbc.Driver")
     fun getExternalHostname(): String = config.node("database-external", "hostname").getString("localhost")
     fun getExternalPort(): Int = config.node("database-external", "port").getInt(3006)
     fun getExternalDatabase(): String = config.node("database-external", "database").getString("offline_velocity")
