@@ -7,6 +7,6 @@ import dev.thebjoredcraft.offlinevelocity.core.databaseService
 class PlayerConnectionHandler() {
     @Subscribe
     suspend fun onDisconnect(event: DisconnectEvent) {
-        databaseService.saveIfNotExists(event.player)
+        databaseService.saveIfNotExists(event.player.uniqueId, event.player.username)
     }
 }
