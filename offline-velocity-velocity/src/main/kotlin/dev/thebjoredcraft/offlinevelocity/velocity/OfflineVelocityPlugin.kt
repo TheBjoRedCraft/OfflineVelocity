@@ -35,7 +35,6 @@ constructor (
 ) {
     init {
         suspendingPluginContainer.initialize(this)
-
         instance = this
     }
 
