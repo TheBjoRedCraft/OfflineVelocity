@@ -10,8 +10,10 @@ import com.velocitypowered.api.event.proxy.ProxyShutdownEvent
 import com.velocitypowered.api.plugin.Plugin
 import com.velocitypowered.api.plugin.annotation.DataDirectory
 import com.velocitypowered.api.proxy.ProxyServer
+import dev.thebjoredcraft.offlinevelocity.api.offlineVelocityApi
 import dev.thebjoredcraft.offlinevelocity.core.databaseService
 import dev.thebjoredcraft.offlinevelocity.velocity.config.ConfigService
+import dev.thebjoredcraft.offlinevelocity.velocity.listener.PlayerConnectionHandler
 import org.slf4j.Logger
 import java.nio.file.Path
 
@@ -42,6 +44,10 @@ constructor (
     suspend fun onProxyInitialization(event: ProxyInitializeEvent) {
         ConfigService.loadConfig()
         databaseService.connect()
+
+        proxy.eventManager.registerSuspend(PlayerConnectionHandler(), this)
+
+        println("offlinevelocity-velocity: $offlineVelocityApi")
     }
 
     @Subscribe

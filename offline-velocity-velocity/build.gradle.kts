@@ -22,16 +22,14 @@ dependencies {
     kapt(libs.velocity.annotation)
     kapt(libs.google.autoservice)
 
-    implementation(libs.kotlin.coroutines)
+    compileOnly(libs.kotlin.coroutines)
     implementation(libs.configurate.hocon)
     implementation(libs.mccoroutine.velocity.api)
     implementation(libs.mccoroutine.velocity.core)
 
-    dependencies {
-        implementation("org.xerial:sqlite-jdbc:3.45.1.0")
-        implementation("com.mysql:mysql-connector-j:9.2.0")
-        implementation("org.postgresql:postgresql:42.7.1")
-    }
+    implementation("org.xerial:sqlite-jdbc:3.45.1.0")
+    implementation("com.mysql:mysql-connector-j:9.2.0")
+    implementation("org.postgresql:postgresql:42.7.2")
 
 
     implementation(libs.bundles.exposed) {
