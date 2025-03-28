@@ -11,6 +11,7 @@ object ConfigService {
 
     fun loadConfig() {
         if (!configFile.exists()) {
+            configFile.parentFile.mkdirs()
             configFile.createNewFile()
         }
 

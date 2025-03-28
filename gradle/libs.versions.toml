@@ -11,6 +11,7 @@ caffeine-coroutines = "2.0.0"
 exposed = "0.60.0"
 hikari = "6.2.1"
 configurate = "4.1.2"
+google-autoservice = "1.1.1"
 
 [libraries]
 velocity-api = { module = "com.velocitypowered:velocity-api", version.ref = "velocity-api" }
@@ -22,6 +23,7 @@ mccoroutine-velocity-core = { module = "com.github.shynixn.mccoroutine:mccorouti
 kotlin-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlin-coroutines" }
 caffeine-coroutines = { module = "dev.hsbrysk:caffeine-coroutines", version.ref = "caffeine-coroutines" }
 hikari = { module = "com.zaxxer:HikariCP", version.ref = "hikari" }
+google-autoservice = { module = "com.google.auto.service:auto-service", version.ref = "google-autoservice" }
 
 exposed-core = { module = "org.jetbrains.exposed:exposed-core", version.ref = "exposed" }
 exposed-jdbc = { module = "org.jetbrains.exposed:exposed-jdbc", version.ref = "exposed" }
