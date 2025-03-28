@@ -137,8 +137,6 @@ class VelocityDatabaseService: DatabaseService, Fallback {
             "",
             "jdbc:sqlite:file:${dbFile.absolutePathString()}",
         )
-
-        info("Successfully connected to database with sqlite!")
     }
 
     private fun connectExternal() {
