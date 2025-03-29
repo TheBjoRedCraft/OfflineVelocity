@@ -1,3 +1,5 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+
 plugins {
     kotlin("jvm")
     kotlin("kapt")
@@ -24,11 +26,11 @@ dependencies {
     implementation(libs.mccoroutine.velocity.api)
     implementation(libs.mccoroutine.velocity.core)
 
-    compileOnly(project(":offline-velocity-api")) {
-        exclude("org.jetbrains.kotlin", "kotlin-stdlib")
-        exclude("org.jetbrains.kotlin", "kotlin-reflect")
-        exclude("org.jetbrains.kotlinx", "kotlinx-coroutines-core")
-    }
+    compileOnly(project(":offline-velocity-api"))
+}
+
+tasks.withType<ShadowJar> {
+    exclude("kotlin")
 }
 
 kotlin {

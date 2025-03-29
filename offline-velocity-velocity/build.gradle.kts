@@ -1,3 +1,5 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+
 plugins {
     kotlin("jvm")
     kotlin("kapt")
@@ -41,6 +43,10 @@ dependencies {
     api(project(":offline-velocity-core"))
     api(libs.hikari)
 
+}
+
+tasks.withType<ShadowJar> {
+    exclude("kotlin")
 }
 
 kotlin {

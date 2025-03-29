@@ -1,6 +1,9 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+
 plugins {
     kotlin("jvm")
     `maven-publish`
+    id("com.gradleup.shadow") version "9.0.0-beta11"
 }
 
 repositories {
@@ -16,7 +19,10 @@ repositories {
 dependencies {
     compileOnly(libs.velocity.api)
     api(project(":offline-velocity-api"))
+}
 
+tasks.withType<ShadowJar> {
+    exclude("kotlin")
 }
 
 kotlin {
