@@ -2,6 +2,7 @@ package dev.thebjoredcraft.offlinevelocity.velocity
 
 
 import com.github.shynixn.mccoroutine.velocity.SuspendingPluginContainer
+import com.github.shynixn.mccoroutine.velocity.launch
 import com.github.shynixn.mccoroutine.velocity.registerSuspend
 import com.google.inject.Inject
 import com.velocitypowered.api.event.Subscribe
@@ -33,7 +34,8 @@ constructor (
     val logger: Logger,
     val proxy: ProxyServer,
     @DataDirectory val dataDirectory: Path,
-    private val suspendingPluginContainer: SuspendingPluginContainer
+
+    val suspendingPluginContainer: SuspendingPluginContainer
 ) {
     init {
         suspendingPluginContainer.initialize(this)
@@ -41,11 +43,11 @@ constructor (
     }
 
     @Subscribe
-    suspend fun onProxyInitialization(event: ProxyInitializeEvent) {
+    fun onProxyInitialization(event: ProxyInitializeEvent) {
         ConfigService.loadConfig()
         databaseService.connect()
 
-        proxy.eventManager.registerSuspend(PlayerConnectionHandler(), this)
+        proxy.eventManager.register(PlayerConnectionHandler(), this)
 
         println("offlinevelocity-velocity: $offlineVelocityApi")
     }

@@ -21,7 +21,7 @@ class OfflineVelocityExamplePlugin
 @Inject
 constructor (
     private val logger: Logger,
-    private val pluginContainer: SuspendingPluginContainer
+    pluginContainer: SuspendingPluginContainer
 ) {
     init {
         pluginContainer.initialize(this)
