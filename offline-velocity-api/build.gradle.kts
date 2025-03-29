@@ -15,7 +15,6 @@ repositories {
 
 dependencies {
     compileOnly(libs.velocity.api)
-
     implementation(libs.kotlin.coroutines)
 }
 

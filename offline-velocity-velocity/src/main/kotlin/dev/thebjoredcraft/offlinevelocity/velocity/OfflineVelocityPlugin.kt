@@ -33,7 +33,7 @@ constructor (
     val logger: Logger,
     val proxy: ProxyServer,
     @DataDirectory val dataDirectory: Path,
-    suspendingPluginContainer: SuspendingPluginContainer
+    private val suspendingPluginContainer: SuspendingPluginContainer
 ) {
     init {
         suspendingPluginContainer.initialize(this)

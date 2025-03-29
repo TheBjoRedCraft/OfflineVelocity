@@ -15,7 +15,6 @@ repositories {
 
 dependencies {
     compileOnly(libs.velocity.api)
-
     api(project(":offline-velocity-api"))
 
 }
