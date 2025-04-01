@@ -26,6 +26,14 @@ tasks.withType<ShadowJar> {
     exclude("kotlin/**")
 }
 
+publishing {
+    publications {
+        create<MavenPublication>("maven") {
+            from(components["java"])
+        }
+    }
+}
+
 kotlin {
     jvmToolchain(21)
 }

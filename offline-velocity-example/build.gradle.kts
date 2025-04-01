@@ -33,6 +33,14 @@ tasks.withType<ShadowJar> {
     dependsOn(":offline-velocity-api:shadowJar")
 }
 
+publishing {
+    publications {
+        create<MavenPublication>("maven") {
+            from(components["java"])
+        }
+    }
+}
+
 kotlin {
     jvmToolchain(21)
 }
