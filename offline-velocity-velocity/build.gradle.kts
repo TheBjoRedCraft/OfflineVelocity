@@ -24,7 +24,7 @@ dependencies {
     kapt(libs.velocity.annotation)
     kapt(libs.google.autoservice)
 
-    compileOnly(libs.kotlin.coroutines)
+    implementation(libs.kotlin.coroutines)
     implementation(libs.configurate.hocon)
     implementation(libs.mccoroutine.velocity.api)
     implementation(libs.mccoroutine.velocity.core)
@@ -40,7 +40,7 @@ dependencies {
         exclude("org.jetbrains.kotlinx", "kotlinx-coroutines-core")
     }
 
-    api(project(":offline-velocity-core"))
+    implementation(project(":offline-velocity-core"))
     api(libs.hikari)
 
 }

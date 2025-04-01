@@ -101,19 +101,18 @@ class VelocityDatabaseService: DatabaseService, Fallback {
     override suspend fun saveIfNotExists(uuid: UUID, name: String) {
         withContext(Dispatchers.IO) {
             newSuspendedTransaction {
-                val existingUser = Users.select ( Users.uuid eq uuid ).firstOrNull()
-
-                if (existingUser == null) {
-                    Users.insert {
-                        it[Users.uuid] = uuid
-                        it[Users.name] = name
+                Users.selectAll().where { Users.uuid eq uuid }.firstOrNull()?.let { row ->
+                    if (row[Users.name] != name) {
+                        Users.update({ Users.uuid eq uuid }) {
+                            it[Users.name] = name
+                        }
                     }
-                } else if (existingUser[Users.name] != name) {
-                    Users.update({ Users.uuid eq uuid }) {
-                        it[Users.name] = name
-                    }
-                } else {
                     return@newSuspendedTransaction
+                }
+
+                Users.insert {
+                    it[Users.uuid] = uuid
+                    it[Users.name] = name
                 }
             }
         }

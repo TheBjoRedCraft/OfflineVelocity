@@ -8,6 +8,7 @@ import com.google.inject.Inject
 import com.velocitypowered.api.event.Subscribe
 import com.velocitypowered.api.event.proxy.ProxyInitializeEvent
 import com.velocitypowered.api.event.proxy.ProxyShutdownEvent
+import com.velocitypowered.api.plugin.Dependency
 import com.velocitypowered.api.plugin.Plugin
 import com.velocitypowered.api.plugin.annotation.DataDirectory
 import com.velocitypowered.api.proxy.ProxyServer
@@ -26,7 +27,7 @@ val plugin: OfflineVelocityPlugin get() = OfflineVelocityPlugin.instance
     version = "2.0.0",
     description = "A modern asynchronous Velocity OfflinePlayer support API",
     url = "github.com/TheBjoRedCraft/OfflineVelocity",
-    authors = ["TheBjoRedCraft"]
+    authors = ["TheBjoRedCraft"],
 )
 class OfflineVelocityPlugin
 @Inject
@@ -47,9 +48,7 @@ constructor (
         ConfigService.loadConfig()
         databaseService.connect()
 
-        proxy.eventManager.register(PlayerConnectionHandler(), this)
-
-        println("offlinevelocity-velocity: $offlineVelocityApi")
+        proxy.eventManager.register(this, PlayerConnectionHandler())
     }
 
     @Subscribe

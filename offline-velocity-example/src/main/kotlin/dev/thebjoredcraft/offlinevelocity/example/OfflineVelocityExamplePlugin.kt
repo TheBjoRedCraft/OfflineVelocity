@@ -5,9 +5,14 @@ import com.google.inject.Inject
 import com.velocitypowered.api.event.Subscribe
 import com.velocitypowered.api.event.proxy.ProxyInitializeEvent
 import com.velocitypowered.api.event.proxy.ProxyShutdownEvent
+import com.velocitypowered.api.plugin.Dependency
 import com.velocitypowered.api.plugin.Plugin
+import com.velocitypowered.api.proxy.ProxyServer
 import dev.thebjoredcraft.offlinevelocity.api.offlineVelocityApi
+import dev.thebjoredcraft.offlinevelocity.example.command.OfflineVelocityTestCommand
 import org.slf4j.Logger
+
+val plugin: OfflineVelocityExamplePlugin get() = OfflineVelocityExamplePlugin.instance
 
 @Plugin(
     id = "offlinevelocityexample",
@@ -15,29 +20,39 @@ import org.slf4j.Logger
     version = "1.0.0",
     description = "A example plugin for OfflineVelocity",
     url = "github.com/TheBjoRedCraft/OfflineVelocity",
-    authors = ["TheBjoRedCraft"]
+    authors = ["TheBjoRedCraft"],
+    dependencies = [
+        Dependency(id = "offlinevelocity", )
+    ]
 )
+
+
+
 class OfflineVelocityExamplePlugin
 @Inject
 constructor (
     private val logger: Logger,
-    pluginContainer: SuspendingPluginContainer
+    val proxyServer: ProxyServer,
+    val pluginContainer: SuspendingPluginContainer
 ) {
     init {
         pluginContainer.initialize(this)
+        instance = this
     }
 
     @Subscribe
     suspend fun onProxyInitialization(event: ProxyInitializeEvent) {
-        println("example api: $offlineVelocityApi")
+        val commandManager = proxyServer.commandManager
 
-        logger.warn("You can display, how man offline players are in the database here: ${offlineVelocityApi.getOfflineUsers().size}")
-        logger.warn("You can get a random offline player name here: ${offlineVelocityApi.getName(offlineVelocityApi.getOfflineUsers().first()) ?: "N/A"}")
-        logger.warn("You can get a random offline player uuid here: ${offlineVelocityApi.getUuid(offlineVelocityApi.getName(offlineVelocityApi.getOfflineUsers().first()) ?: "N/A")}")
+        commandManager.register(commandManager.metaBuilder("offlinevelocitytest").build(), OfflineVelocityTestCommand())
     }
 
     @Subscribe
     suspend fun onProxyShutdown(event: ProxyShutdownEvent) {
 
+    }
+
+    companion object {
+        lateinit var instance: OfflineVelocityExamplePlugin
     }
 }
