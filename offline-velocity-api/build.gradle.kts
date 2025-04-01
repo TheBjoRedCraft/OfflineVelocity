@@ -23,7 +23,7 @@ dependencies {
 }
 
 tasks.withType<ShadowJar> {
-    exclude("kotlin")
+    exclude("kotlin/**")
 }
 
 kotlin {

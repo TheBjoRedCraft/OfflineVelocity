@@ -30,7 +30,8 @@ dependencies {
 }
 
 tasks.withType<ShadowJar> {
-    exclude("kotlin")
+    dependsOn(":offline-velocity-api:shadowJar")
+    exclude("kotlin/**")
 }
 
 kotlin {
