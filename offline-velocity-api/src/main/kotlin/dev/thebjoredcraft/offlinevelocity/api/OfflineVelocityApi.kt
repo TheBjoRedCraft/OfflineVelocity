@@ -1,5 +1,6 @@
 package dev.thebjoredcraft.offlinevelocity.api
 
+import dev.thebjoredcraft.offlinevelocity.api.`object`.User
 import net.kyori.adventure.util.Services
 import java.util.UUID
 
@@ -35,6 +36,22 @@ interface OfflineVelocityApi {
      * @return A set of UUIDs representing all offline users.
      */
     suspend fun getOfflineUsers(): Set<UUID>
+
+    /**
+     * Retrieves a User object based on the provided UUID.
+     *
+     * @param uuid The UUID of the user.
+     * @return The User object, or null if no user is found with the given UUID.
+     */
+    suspend fun getUser(uuid: UUID): User?
+
+    /**
+     * Retrieves a User object based on the provided name.
+     *
+     * @param name The name of the user.
+     * @return The User object, or null if no user is found with the given name.
+     */
+    suspend fun getUser(name: String): User?
 
     companion object {
         val INSTANCE: OfflineVelocityApi = Services.serviceWithFallback(OfflineVelocityApi::class.java).orElseThrow { Error("Service ${OfflineVelocityApi::class.java.name} not available") }

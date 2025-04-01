@@ -2,6 +2,7 @@ package dev.thebjoredcraft.offlinevelocity.velocity
 
 import com.google.auto.service.AutoService
 import dev.thebjoredcraft.offlinevelocity.api.OfflineVelocityApi
+import dev.thebjoredcraft.offlinevelocity.api.`object`.User
 import dev.thebjoredcraft.offlinevelocity.core.databaseService
 import net.kyori.adventure.util.Services.Fallback
 import java.util.*
@@ -38,5 +39,25 @@ class OfflineVelocityApiVelocity(): OfflineVelocityApi, Fallback {
         set.addAll(onlineUsers)
 
         return set
+    }
+
+    override suspend fun getUser(uuid: UUID): User? {
+        val optional = OfflineVelocityPlugin.instance.proxy.getPlayer(uuid)
+
+        if(optional.isPresent) {
+            return User(optional.get().username, optional.get().uniqueId)
+        }
+
+        return databaseService.getUser(uuid)
+    }
+
+    override suspend fun getUser(name: String): User? {
+        val optional = OfflineVelocityPlugin.instance.proxy.getPlayer(name)
+
+        if(optional.isPresent) {
+            return User(optional.get().username, optional.get().uniqueId)
+        }
+
+        return databaseService.getUser(name)
     }
 }
